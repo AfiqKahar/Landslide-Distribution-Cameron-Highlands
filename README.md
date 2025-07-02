@@ -22,4 +22,3 @@ Website: [https://www.researchgate.net/profile/Muhammad-Afiq-Abdul-Kahar/researc
 
 Disclaimer:
 This data is provided “as is” without warranty or guarantee of accuracy or completeness.
-For licensing inquiries, contact: [afiqkahar98@gmail.com]
