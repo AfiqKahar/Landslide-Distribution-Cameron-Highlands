@@ -9,7 +9,7 @@ You are permitted to use, view, and analyze this Dataset for the following purpo
 Permitted uses:
 ✔ Personal use
 ✔ Educational or research purposes
-✔ Internal business or project reference
+✔ Project reference
 
 Prohibited without written permission:
 ✘ Redistribution or resale
