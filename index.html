@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -20,6 +19,61 @@
             padding: 0;
             margin: 0;
         }
+/* ✅ Legend font size adjustment */
+.leaflet-control-layers label,
+.leaflet-control-layers .leaflet-control-layers-overlays,
+.leaflet-control-layers-overlays td,
+.leaflet-control-layers-overlays tr {
+    font-size: 12px !important;
+}
+    .leaflet-control-layers-toggle {
+        width: 30px !important;
+        height: 30px !important;
+        background-size: 20px 20px !important;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .leaflet-control-layers {
+        padding: 2px !important;
+    }
+    .leaflet-control-locate {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .leaflet-control-locate a {
+        width: 30px !important;
+        height: 30px !important;
+        line-height: 30px !important;
+        font-size: 16px !important;
+    }
+
+    .leaflet-control-locate a .fa {
+        font-size: 16px !important;
+    }
+
+    /* Optional: shrink tooltip or status text */
+    .leaflet-control-locate.active .leaflet-control-locate-location-arrow {
+        font-size: 16px !important;
+    }
+    .leaflet-control-measure-toggle {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 16px !important; /* resize icon */
+        line-height: 30px !important;
+    }
+
+    .leaflet-control-measure-toggle::before {
+        font-size: 16px !important; /* optional: if Font Awesome icon size not adjusting */
+        line-height: 30px !important;
+    }
+.abstractUncollapsed {
+    width: auto !important;
+    max-width: 200px !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
         </style>
         <title>Landslide Distribution Cameron Highlands</title>
     </head>
@@ -37,14 +91,13 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="data/DistrictofCameronHighlands_1.js"></script>
         <script src="data/MappedLandslidesCameronHighlands_2.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[4.339219821858971,101.30186921661347],[4.655061234941978,101.65313341689131]]);
+        }).fitBounds([[4.28871881742131,101.30601052259271],[4.666304779123804,101.63387300931988]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -83,7 +136,7 @@
             return this._div;
         };
         title.update = function () {
-            this._div.innerHTML = '<h2>Landslide Distribution Cameron Highlands</h2>';
+            this._div.innerHTML = '<h2 style="font-size: 14px;">Landslide Distribution Cameron Highlands</h2>';
         };
         title.addTo(map);
         var abstract = new L.Control({'position':'bottomleft'});
@@ -101,11 +154,25 @@
                 this._div.classList.add("abstract");
                 this._div.innerHTML = 'i'
             }
-            abstract.show = function () {
-                this._div.classList.remove("abstract");
-                this._div.classList.add("abstractUncollapsed");
-                this._div.innerHTML = 'Landslide Field Mapping - Cameron Highlands<br />This map shows landslide distribution based on detailed fieldwork and visual interpretation. It highlights both recent and historical events to support planning and hazard awareness.<br />-----------------------------------------------------------------------------------------------<br />Copyright © 2025 [Muhammad Afiq Bin Abdul Kahar]. All rights reserved.<br />This dataset is the result of extensive fieldwork, analysis, and personal dedication. While formal copyright protections apply, this work also reflects significant individual effort and commitment.<br />-----------------------------------------------------------------------------------------------<br />You are permitted to use, view, and analyze this Dataset for the following purposes:<br />-----------------------------------------------------------------------------------------------<br />Permitted uses:<br />✔ Personal use<br />✔ Educational or research purposes<br />✔ Internal business or project reference<br />-----------------------------------------------------------------------------------------------<br />Prohibited without written permission:<br />✘ Redistribution or resale<br />✘ Use in commercial products or services<br />✘ Removal or alteration of this copyright notice<br />-----------------------------------------------------------------------------------------------<br />Attribution:<br />If this shapefile is used in a report, publication, or presentation, please credit:<br />[Muhammad Afiq Bin Abdul Kahar]<br />-----------------------------------------------------------------------------------------------<br />[Optional: https://www.researchgate.net/profile/Muhammad-Afiq-Abdul-Kahar/research]<br />Disclaimer:<br />This data is provided “as is” without warranty or guarantee of accuracy or completeness.<br />For licensing inquiries, contact: [afiqkahar98@gmail.com]';
-        };
+      abstract.show = function() {
+        this._div.classList.remove("abstract");
+        this._div.classList.add("abstractUncollapsed");
+        this._div.innerHTML = `
+          <div style="font-size: 12px; line-height: 1.2; width: 100%; max-width: 200px;">
+            <strong>Landslide Mapping - Cameron Highlands</strong><br />
+            This map shows landslides distribution based on fieldwork and visual interpretation.
+            <br><br>
+            <strong>© 2025 Muhammad Afiq Bin Abdul Kahar</strong><br />
+            Use permitted for personal, educational, internal and project-related reference.<br />
+            No redistribution, commercial use, or alteration of datasets without permission.
+            <br><br>
+            <strong>If this dataset is used in a report, publication, or presentation, please credit:</strong><br />
+            Muhammad Afiq Bin Abdul Kahar
+            <br><br>
+            <strong>Contact:</strong> afiqkahar98@gmail.com
+          </div>
+        `;
+      };
         abstract.addTo(map);
         var zoomControl = L.control.zoom({
             position: 'topleft'
@@ -140,16 +207,13 @@
         function pop_DistrictofCameronHighlands_1(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">NAM</th>\
-                        <td class="visible-with-data" id="NAM">' + (feature.properties['NAM'] !== null ? autolinker.link(String(feature.properties['NAM']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="NAM" colspan="2"><strong>District</strong><br />' + (feature.properties['NAM'] !== null ? autolinker.link(String(feature.properties['NAM']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Shape_Leng</th>\
-                        <td class="visible-with-data" id="Shape_Leng">' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(String(feature.properties['Shape_Leng']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Shape_Leng" colspan="2"><strong>Length (m)</strong><br />' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(String(feature.properties['Shape_Leng']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Shape_Area</th>\
-                        <td class="visible-with-data" id="Shape_Area">' + (feature.properties['Shape_Area'] !== null ? autolinker.link(String(feature.properties['Shape_Area']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Shape_Area" colspan="2"><strong>Area (Sq km)</strong><br />' + (feature.properties['Shape_Area'] !== null ? autolinker.link(String(feature.properties['Shape_Area']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -165,11 +229,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(82,70,217,1.0)',
-                dashArray: '',
+                color: 'rgba(204,196,36,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -178,11 +242,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(104,190,233,1.0)',
-                dashArray: '',
+                color: 'rgba(15,204,92,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -191,11 +255,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(232,87,148,1.0)',
-                dashArray: '',
+                color: 'rgba(88,16,204,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -204,11 +268,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(174,45,200,1.0)',
-                dashArray: '',
+                color: 'rgba(49,121,204,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -217,11 +281,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(103,229,81,1.0)',
-                dashArray: '',
+                color: 'rgba(204,94,177,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -230,11 +294,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(130,235,193,1.0)',
-                dashArray: '',
+                color: 'rgba(204,72,58,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -243,11 +307,11 @@
                     return {
                 pane: 'pane_DistrictofCameronHighlands_1',
                 opacity: 1,
-                color: 'rgba(232,118,61,1.0)',
-                dashArray: '',
+                color: 'rgba(52,204,14,1.0)',
+                dashArray: '2.0,4.0',
                 lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 4.0,
+                lineJoin: 'miter',
+                weight: 2.0,
                 fillOpacity: 0,
                 interactive: true,
             }
@@ -271,156 +335,118 @@
         function pop_MappedLandslidesCameronHighlands_2(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Name" colspan="2"><strong>Name</strong><br />' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Types</th>\
-                        <td class="visible-with-data" id="Types">' + (feature.properties['Types'] !== null ? autolinker.link(String(feature.properties['Types']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Types" colspan="2"><strong>Types</strong><br />' + (feature.properties['Types'] !== null ? autolinker.link(String(feature.properties['Types']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Land Use Land Cover</th>\
-                        <td class="visible-with-data" id="LULC">' + (feature.properties['LULC'] !== null ? autolinker.link(String(feature.properties['LULC']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="LULC" colspan="2"><strong>Land Use Land Cover</strong><br />' + (feature.properties['LULC'] !== null ? autolinker.link(String(feature.properties['LULC']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Locality</th>\
-                        <td class="visible-with-data" id="Place">' + (feature.properties['Place'] !== null ? autolinker.link(String(feature.properties['Place']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Place" colspan="2"><strong>Locality</strong><br />' + (feature.properties['Place'] !== null ? autolinker.link(String(feature.properties['Place']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Easting (X)</th>\
-                        <td class="visible-with-data" id="X">' + (feature.properties['X'] !== null ? autolinker.link(String(feature.properties['X']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="X" colspan="2"><strong>Easting (X)</strong><br />' + (feature.properties['X'] !== null ? autolinker.link(String(feature.properties['X']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Northing (Y)</th>\
-                        <td class="visible-with-data" id="Y">' + (feature.properties['Y'] !== null ? autolinker.link(String(feature.properties['Y']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Y" colspan="2"><strong>Northing (Y)</strong><br />' + (feature.properties['Y'] !== null ? autolinker.link(String(feature.properties['Y']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">State</th>\
-                        <td class="visible-with-data" id="State">' + (feature.properties['State'] !== null ? autolinker.link(String(feature.properties['State']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="State" colspan="2"><strong>State</strong><br />' + (feature.properties['State'] !== null ? autolinker.link(String(feature.properties['State']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">District</th>\
-                        <td class="visible-with-data" id="District">' + (feature.properties['District'] !== null ? autolinker.link(String(feature.properties['District']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="District" colspan="2"><strong>District</strong><br />' + (feature.properties['District'] !== null ? autolinker.link(String(feature.properties['District']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Year</th>\
-                        <td class="visible-with-data" id="Year">' + (feature.properties['Year'] !== null ? autolinker.link(String(feature.properties['Year']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Year" colspan="2"><strong>Year</strong><br />' + (feature.properties['Year'] !== null ? autolinker.link(String(feature.properties['Year']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Source</th>\
-                        <td class="visible-with-data" id="Source">' + (feature.properties['Source'] !== null ? autolinker.link(String(feature.properties['Source']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Source" colspan="2"><strong>Source</strong><br />' + (feature.properties['Source'] !== null ? autolinker.link(String(feature.properties['Source']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Evolution of Landslide</th>\
-                        <td class="visible-with-data" id="Evolution">' + (feature.properties['Evolution'] !== null ? autolinker.link(String(feature.properties['Evolution']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Evolution" colspan="2"><strong>Evolution of Landslide</strong><br />' + (feature.properties['Evolution'] !== null ? autolinker.link(String(feature.properties['Evolution']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Landslide Activity</th>\
-                        <td class="visible-with-data" id="Activity">' + (feature.properties['Activity'] !== null ? autolinker.link(String(feature.properties['Activity']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Activity" colspan="2"><strong>Landslide Activity</strong><br />' + (feature.properties['Activity'] !== null ? autolinker.link(String(feature.properties['Activity']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Soil Texture</th>\
-                        <td class="visible-with-data" id="Texture">' + (feature.properties['Texture'] !== null ? autolinker.link(String(feature.properties['Texture']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Texture" colspan="2"><strong>Soil Texture</strong><br />' + (feature.properties['Texture'] !== null ? autolinker.link(String(feature.properties['Texture']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Erosion Type</th>\
-                        <td class="visible-with-data" id="Erosion">' + (feature.properties['Erosion'] !== null ? autolinker.link(String(feature.properties['Erosion']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Erosion" colspan="2"><strong>Erosion Type</strong><br />' + (feature.properties['Erosion'] !== null ? autolinker.link(String(feature.properties['Erosion']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Predominants Soil Constituents</th>\
-                        <td class="visible-with-data" id="Soil">' + (feature.properties['Soil'] !== null ? autolinker.link(String(feature.properties['Soil']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Soil" colspan="2"><strong>Predominants Soil Constituents</strong><br />' + (feature.properties['Soil'] !== null ? autolinker.link(String(feature.properties['Soil']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Lithology</th>\
-                        <td class="visible-with-data" id="Lithology">' + (feature.properties['Lithology'] !== null ? autolinker.link(String(feature.properties['Lithology']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Lithology" colspan="2"><strong>Lithology</strong><br />' + (feature.properties['Lithology'] !== null ? autolinker.link(String(feature.properties['Lithology']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Type of Movement</th>\
-                        <td class="visible-with-data" id="Movement">' + (feature.properties['Movement'] !== null ? autolinker.link(String(feature.properties['Movement']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Movement" colspan="2"><strong>Type of Movement</strong><br />' + (feature.properties['Movement'] !== null ? autolinker.link(String(feature.properties['Movement']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Weatherin Grade</th>\
-                        <td class="visible-with-data" id="Weathering">' + (feature.properties['Weathering'] !== null ? autolinker.link(String(feature.properties['Weathering']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Weathering" colspan="2"><strong>Weathering Grade</strong><br />' + (feature.properties['Weathering'] !== null ? autolinker.link(String(feature.properties['Weathering']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Heigth (m)</th>\
-                        <td class="visible-with-data" id="Height_m">' + (feature.properties['Height_m'] !== null ? autolinker.link(String(feature.properties['Height_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Height_m" colspan="2"><strong>Heigth (m)</strong><br />' + (feature.properties['Height_m'] !== null ? autolinker.link(String(feature.properties['Height_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Width (m)</th>\
-                        <td class="visible-with-data" id="Width_m">' + (feature.properties['Width_m'] !== null ? autolinker.link(String(feature.properties['Width_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Width_m" colspan="2"><strong>Width (m)</strong><br />' + (feature.properties['Width_m'] !== null ? autolinker.link(String(feature.properties['Width_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Length (m)</th>\
-                        <td class="visible-with-data" id="Length_m">' + (feature.properties['Length_m'] !== null ? autolinker.link(String(feature.properties['Length_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Length_m" colspan="2"><strong>Length (m)</strong><br />' + (feature.properties['Length_m'] !== null ? autolinker.link(String(feature.properties['Length_m']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Date</th>\
-                        <td class="visible-with-data" id="Date">' + (feature.properties['Date'] !== null ? autolinker.link(String(feature.properties['Date']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Date" colspan="2"><strong>Date</strong><br />' + (feature.properties['Date'] !== null ? autolinker.link(String(feature.properties['Date']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Time</th>\
-                        <td class="visible-with-data" id="Time">' + (feature.properties['Time'] !== null ? autolinker.link(String(feature.properties['Time']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Time" colspan="2"><strong>Time</strong><br />' + (feature.properties['Time'] !== null ? autolinker.link(String(feature.properties['Time']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Morphology</th>\
-                        <td class="visible-with-data" id="Curvature">' + (feature.properties['Curvature'] !== null ? autolinker.link(String(feature.properties['Curvature']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Curvature" colspan="2"><strong>Morphology</strong><br />' + (feature.properties['Curvature'] !== null ? autolinker.link(String(feature.properties['Curvature']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Vegetation Density</th>\
-                        <td class="visible-with-data" id="VegDensity">' + (feature.properties['VegDensity'] !== null ? autolinker.link(String(feature.properties['VegDensity']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="VegDensity" colspan="2"><strong>Vegetation Density</strong><br />' + (feature.properties['VegDensity'] !== null ? autolinker.link(String(feature.properties['VegDensity']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Vegetation Type</th>\
-                        <td class="visible-with-data" id="VegType">' + (feature.properties['VegType'] !== null ? autolinker.link(String(feature.properties['VegType']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="VegType" colspan="2"><strong>Vegetation Type</strong><br />' + (feature.properties['VegType'] !== null ? autolinker.link(String(feature.properties['VegType']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Soil Type</th>\
-                        <td class="visible-with-data" id="SoilForm">' + (feature.properties['SoilForm'] !== null ? autolinker.link(String(feature.properties['SoilForm']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="SoilForm" colspan="2"><strong>Soil Type</strong><br />' + (feature.properties['SoilForm'] !== null ? autolinker.link(String(feature.properties['SoilForm']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Geodynamic Features</th>\
-                        <td class="visible-with-data" id="Geodynamic">' + (feature.properties['Geodynamic'] !== null ? autolinker.link(String(feature.properties['Geodynamic']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Geodynamic" colspan="2"><strong>Geodynamic Features</strong><br />' + (feature.properties['Geodynamic'] !== null ? autolinker.link(String(feature.properties['Geodynamic']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Degree of Development</th>\
-                        <td class="visible-with-data" id="DegOfDev">' + (feature.properties['DegOfDev'] !== null ? autolinker.link(String(feature.properties['DegOfDev']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="DegOfDev" colspan="2"><strong>Degree of Development</strong><br />' + (feature.properties['DegOfDev'] !== null ? autolinker.link(String(feature.properties['DegOfDev']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Site Condition</th>\
-                        <td class="visible-with-data" id="Site">' + (feature.properties['Site'] !== null ? autolinker.link(String(feature.properties['Site']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Site" colspan="2"><strong>Site Condition</strong><br />' + (feature.properties['Site'] !== null ? autolinker.link(String(feature.properties['Site']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">State of Wetness</th>\
-                        <td class="visible-with-data" id="Wetness">' + (feature.properties['Wetness'] !== null ? autolinker.link(String(feature.properties['Wetness']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Wetness" colspan="2"><strong>State of Wetness</strong><br />' + (feature.properties['Wetness'] !== null ? autolinker.link(String(feature.properties['Wetness']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Source of Water</th>\
-                        <td class="visible-with-data" id="WtrSource">' + (feature.properties['WtrSource'] !== null ? autolinker.link(String(feature.properties['WtrSource']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="WtrSource" colspan="2"><strong>Source of Water</strong><br />' + (feature.properties['WtrSource'] !== null ? autolinker.link(String(feature.properties['WtrSource']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Area Drainage</th>\
-                        <td class="visible-with-data" id="AreaDrain">' + (feature.properties['AreaDrain'] !== null ? autolinker.link(String(feature.properties['AreaDrain']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="AreaDrain" colspan="2"><strong>Area Drainage</strong><br />' + (feature.properties['AreaDrain'] !== null ? autolinker.link(String(feature.properties['AreaDrain']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Structures at Risk</th>\
-                        <td class="visible-with-data" id="StructRisk">' + (feature.properties['StructRisk'] !== null ? autolinker.link(String(feature.properties['StructRisk']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="StructRisk" colspan="2"><strong>Structures at Risk</strong><br />' + (feature.properties['StructRisk'] !== null ? autolinker.link(String(feature.properties['StructRisk']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Corrective Measures</th>\
-                        <td class="visible-with-data" id="CorrMeas">' + (feature.properties['CorrMeas'] !== null ? autolinker.link(String(feature.properties['CorrMeas']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="CorrMeas" colspan="2"><strong>Corrective Measures</strong><br />' + (feature.properties['CorrMeas'] !== null ? autolinker.link(String(feature.properties['CorrMeas']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Probable Cause of Landslide</th>\
-                        <td class="visible-with-data" id="Cause">' + (feature.properties['Cause'] !== null ? autolinker.link(String(feature.properties['Cause']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Cause" colspan="2"><strong>Probable Cause of Landslide</strong><br />' + (feature.properties['Cause'] !== null ? autolinker.link(String(feature.properties['Cause']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Folder</th>\
-                        <td class="visible-with-data" id="Folder">' + (feature.properties['Folder'] !== null ? autolinker.link(String(feature.properties['Folder']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Folder" colspan="2"><strong>Folder</strong><br />' + (feature.properties['Folder'] !== null ? autolinker.link(String(feature.properties['Folder']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Dataset</th>\
-                        <td class="visible-with-data" id="Dataset">' + (feature.properties['Dataset'] !== null ? autolinker.link(String(feature.properties['Dataset']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Dataset" colspan="2"><strong>Dataset</strong><br />' + (feature.properties['Dataset'] !== null ? autolinker.link(String(feature.properties['Dataset']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -518,16 +544,6 @@
         });
         bounds_group.addLayer(layer_MappedLandslidesCameronHighlands_2);
         map.addLayer(layer_MappedLandslidesCameronHighlands_2);
-        var osmGeocoder = new L.Control.Geocoder({
-            collapsed: true,
-            position: 'topleft',
-            text: 'Search',
-            title: 'Testing'
-        }).addTo(map);
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
         var overlaysTree = [
             {label: 'Mapped Landslides Cameron Highlands<br /><table><tr><td style="text-align: center;"><img src="legend/MappedLandslidesCameronHighlands_2_Abandoned0.png" /></td><td>Abandoned</td></tr><tr><td style="text-align: center;"><img src="legend/MappedLandslidesCameronHighlands_2_Dormant1.png" /></td><td>Dormant</td></tr><tr><td style="text-align: center;"><img src="legend/MappedLandslidesCameronHighlands_2_Stabilised2.png" /></td><td>Stabilised</td></tr><tr><td style="text-align: center;"><img src="legend/MappedLandslidesCameronHighlands_2_Suspended3.png" /></td><td>Suspended</td></tr></table>', layer: layer_MappedLandslidesCameronHighlands_2},
             {label: 'District of Cameron Highlands<br /><table><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_BandarTanahRata0.png" /></td><td>Bandar Tanah Rata</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_HuluTelom1.png" /></td><td>Hulu Telom</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_PekanBrinchang2.png" /></td><td>Pekan Brinchang</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_PekanLubukTamang3.png" /></td><td>Pekan Lubuk Tamang</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_PekanRinglet4.png" /></td><td>Pekan Ringlet</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_Ringlet5.png" /></td><td>Ringlet</td></tr><tr><td style="text-align: center;"><img src="legend/DistrictofCameronHighlands_1_TanahRata6.png" /></td><td>Tanah Rata</td></tr></table>', layer: layer_DistrictofCameronHighlands_1},
